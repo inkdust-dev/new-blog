@@ -1137,9 +1137,9 @@ links:
 static_prefix:
   # 内部静态
   # Internal static
-  internal_js: https://cdnn.boochi.cn/gh/fluid-dev/hexo-theme-fluid@master/source/js
-  internal_css: https://cdnn.boochi.cn/gh/fluid-dev/hexo-theme-fluid@master/source/css
-  internal_img: https://cdnn.boochi.cn/gh/fluid-dev/hexo-theme-fluid@master/source/img
+  internal_js: https://mochen.s3.bitiful.net/blog/js
+  internal_css: https://mochen.s3.bitiful.net/blog/css
+  internal_img: https://mochen.s3.bitiful.net/blog/img
 
   anchor: https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/anchor-js/5.0.0/
 
