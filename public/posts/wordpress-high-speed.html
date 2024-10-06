@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cravatar.cn/avatar/4214719ec961227dd3a14fd5995844c7?&amp;r=pg">
+  <link rel="icon" href="https://cravatar.cn/avatar/4214719ec961227dd3a14fd5995844c7?&amp;r=pg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="InkDust">
+  <meta name="keywords" content="inkdust,ink dust,ink blog.inkdust blog,墨尘,墨尘的博客">
+  
+    <meta name="description" content="从七个个角度优化你的个人&#x2F;商务WordPress博客。 选用层服务器选用若你想在中国大陆地区获得良好的速度优化，建议你购买国内服务器并完成 网站备案后，再开始部署你的WordPress博客程序。 腾讯云网站备案指南：网站备案 如何快速备案您的网站-快速入门-文档中心-腾讯云 (tencent.com) 阿里云网站备案指南：操作指南_备案-阿里云帮助中心 (aliyun.com) 百度云网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPress高速加载性能优化方案">
+<meta property="og:url" content="https://www.inkdust.top/posts/wordpress-high-speed.html">
+<meta property="og:site_name" content="墨尘の网络日志">
+<meta property="og:description" content="从七个个角度优化你的个人&#x2F;商务WordPress博客。 选用层服务器选用若你想在中国大陆地区获得良好的速度优化，建议你购买国内服务器并完成 网站备案后，再开始部署你的WordPress博客程序。 腾讯云网站备案指南：网站备案 如何快速备案您的网站-快速入门-文档中心-腾讯云 (tencent.com) 阿里云网站备案指南：操作指南_备案-阿里云帮助中心 (aliyun.com) 百度云网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/blog-image/wordpress-high-speed.png">
+<meta property="article:published_time" content="2023-08-08T10:55:35.536Z">
+<meta property="article:modified_time" content="2024-08-07T14:31:49.591Z">
+<meta property="article:author" content="InkDust">
+<meta property="article:tag" content="WordPress">
+<meta property="article:tag" content="加速">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/blog-image/wordpress-high-speed.png">
+  
+  
+  
+  <title>WordPress高速加载性能优化方案 - 墨尘の网络日志</title>
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.inkdust.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨尘の网络日志</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/blog-image/blog-banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WordPress高速加载性能优化方案"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        InkDust
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-08 10:55" pubdate>
+          2023年8月8日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="umami-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="umami-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WordPress高速加载性能优化方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从七个个角度优化你的个人&#x2F;商务WordPress博客。</p>
+<h1 id="选用层"><a href="#选用层" class="headerlink" title="选用层"></a>选用层</h1><h2 id="服务器选用"><a href="#服务器选用" class="headerlink" title="服务器选用"></a>服务器选用</h2><p>若你想在中国大陆地区获得良好的速度优化，建议你购买国内服务器并完成 <code>网站备案</code>后，再开始部署你的WordPress博客程序。</p>
+<p>腾讯云网站备案指南：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/243/39038">网站备案 如何快速备案您的网站-快速入门-文档中心-腾讯云 (tencent.com)</a></p>
+<p>阿里云网站备案指南：<a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/icp-filing/user-guide/?spm=a2c4g.11186623.0.0.38a81d9cGvrtAA">操作指南_备案-阿里云帮助中心 (aliyun.com)</a></p>
+<p>百度云网站备案指南：<a target="_blank" rel="noopener" href="https://cloud.baidu.com/doc/BeiAn/index.html">ICP备案服务-百度智能云 (baidu.com)</a></p>
+<p>网易云网站备案指南；<a target="_blank" rel="noopener" href="https://sf.163.com/help/documents/190221998684819456">首次备案教程_域名与备案_产品文档_帮助与文档-网易数帆 (163.com)</a></p>
+<p>七牛云网站备案指南：<a target="_blank" rel="noopener" href="https://developer.qiniu.com/qvm/4184/qvm-first-guide">首次备案指南_使用指南_云主机 - 七牛开发者中心 (qiniu.com)</a></p>
+<p>工业和信息化部政务服务平台（ICP&#x2F;IP地址&#x2F;域名信息备案管理系统）：<a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/#/Integrated/index">ICP&#x2F;IP地址&#x2F;域名信息备案管理系统 (miit.gov.cn)</a></p>
+<p>腾讯云轻量应用服务器购买（无AFF）：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/lighthouse">轻量应用服务器Lighthouse_香港轻量服务器_海外轻量服务器-腾讯云 (tencent.com)</a></p>
+<p>腾讯云CVM云服务器购买（无AFF）：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/cvm">云服务器CVM_云主机_云计算服务器_弹性云服务器-腾讯云 (tencent.com)</a></p>
+<p>腾讯云GPU服务器购买（无AFF）：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/gpu">GPU云服务器_并行计算_弹性计算_人工智能_深度学习-腾讯云 (tencent.com)</a></p>
+<p>阿里云轻量应用服务器购买（无AFF）：<a target="_blank" rel="noopener" href="https://www.aliyun.com/product/swas?spm=5176.28055625.J_3207526240.20.5421154aQbMvxH&scm=20140722.S_function@@product@@65233._.ID_function@@product@@65233-RL_%E8%BD%BB%E9%87%8F-LOC_bar-OR_ser-V_3-P0_0">轻量应用服务器_web服务器_个人建站_弹性计算-阿里云 (aliyun.com)</a></p>
+<p>阿里云ECS云服务器购买（无AFF）：<a target="_blank" rel="noopener" href="https://www.aliyun.com/product/ecs?spm=5176.21213303.744563.1.cb5153c90W1CYv&scm=20140722.S_card@@%E4%BA%A7%E5%93%81@@163972.S_card0.ID_card@@%E4%BA%A7%E5%93%81@@163972-RL_%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%20ECS-OR_ser-V_3-P0_0">云服务器ECS_云主机_服务器托管_弹性计算-阿里云 (aliyun.com)</a></p>
+<p>百度云轻量应用服务器LS购买（无AFF）：<a target="_blank" rel="noopener" href="https://cloud.baidu.com/product/lightserver.html">轻量应用服务器 LS_web服务器_小规格云服务器-百度智能云 (baidu.com)</a></p>
+<p>百度云云服务器BCC购买（无AFF）：<a target="_blank" rel="noopener" href="https://cloud.baidu.com/product/lightserver.html">轻量应用服务器 LS_web服务器_小规格云服务器-百度智能云 (baidu.com)</a></p>
+<p>其他IDC云服务商的服务器暂不列出。</p>
+<p>若你想在中国大陆地区获得良好的速度优化，且不想进行繁杂的网站备案，建议选择亚洲地区的云服务器&#x2F;ECS&#x2F;轻量应用服务器&#x2F;VPS，此处不再列举。</p>
+<p>若你不想在中国大陆地区获得良好的速度优化，请关闭这篇文章。</p>
+<h2 id="CDN选用"><a href="#CDN选用" class="headerlink" title="CDN选用"></a>CDN选用</h2><p>良好的CDN不仅可以为网站提速，还可以隐藏源站IP地址，保护服务器不受恶意攻击。</p>
+<p>关于CDN的选用，可以在各大搜索引擎上搜索到，国内已备案建议选择国内CDN，未备案则只能选择国外CDN。</p>
+<p>我个人常用的几个CDN提供商：</p>
+<p>腾讯云：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/cdn">CDN 内容分发网络 _CDN内容加速_CDN加速-腾讯云 (tencent.com)</a></p>
+<p>阿里云：<a target="_blank" rel="noopener" href="https://www.aliyun.com/product/cdn?spm=5176.28055625.J_3207526240.50.5421154a9V4vEf&scm=20140722.S_function@@product@@96099._.ID_function@@product@@96099-RL_cdn-LOC_bar-OR_ser-V_3-P0_0">CDN_内容分发网络_CDN网站加速-阿里云 (aliyun.com)</a></p>
+<p>初七云：<a target="_blank" rel="noopener" href="https://chuqiyun.com/cart?fid=2&gid=3">购物车 - 初七云 - 企业级云服务器、高防服务器、香港服务器、免费CDN云计算服务商！ (chuqiyun.com)</a></p>
+<p>CloudFlare：<a target="_blank" rel="noopener" href="https://www.cloudflare-cn.com/">Cloudflare 中国官网 | 智能化云服务平台 | 免费CDN安全防护 | Cloudflare (cloudflare-cn.com)</a></p>
+<p>CacheFly：<a target="_blank" rel="noopener" href="https://www.cachefly.com/">Trusted CDN Provider | Faster Content Delivery | CacheFly</a></p>
+<p>Gcore：<a target="_blank" rel="noopener" href="https://gcore.com/zh">Gcore | 全球托管、CDN、边缘和云服务</a></p>
+<h2 id="主题选用"><a href="#主题选用" class="headerlink" title="主题选用"></a>主题选用</h2><p>尽量选择图片加载量较少的，JS较少的主题，可以显著提升加载速度。这里不列举。</p>
+<h1 id="加速层"><a href="#加速层" class="headerlink" title="加速层"></a>加速层</h1><h2 id="JS-CSS-图片静态文件加速"><a href="#JS-CSS-图片静态文件加速" class="headerlink" title="JS&#x2F;CSS&#x2F;图片静态文件加速"></a>JS&#x2F;CSS&#x2F;图片静态文件加速</h2><p>建议选用WP-Rocket和对象存储+CDN的方式，对CDN路径进行映射，如果没有钱购买WP-Rocket，可以通过WPJAM实现同样的效果。</p>
+<p>对象存储配置（原文地址：<a target="_blank" rel="noopener" href="https://blog.wpjam.com/m/wpjam-basic-cdn/">WPJAM Basic 详细介绍：一键实现 WordPress 静态资源 CDN 加速 - WordPress 果酱</a>）：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.wpjam.com/m/aliyun-oss-cdn/">WordPress 博客使用阿里云对象存储 OSS 进行静态资源 CDN 加速</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.wpjam.com/m/qcloud-cos-cdn/">WordPress 博客使用腾讯云对象存储 COS 进行静态资源 CDN 加速</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.wpjam.com/m/volc-veimagex/">WordPress 博客使用火山引擎 veImageX 进行静态资源 CDN 加速</a></li>
+</ul>
+<p>然后就可以使用WP-Rocket映射CDN CNAME：</p>
+<p>在 <code>WP Rocket</code>插件设置中，在CDN选项里，启用CDN，并在CDN CNAME中填入配置好的CDN域名，并选中套用到所有文件，如下图：</p>
+<p><img src="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/2023/8/8-768x342_ae4f2f18235ab0d5ded34c124275f9d3.jpg" srcset="/img/loading.gif" lazyload alt="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/2023/8/8-768x342_ae4f2f18235ab0d5ded34c124275f9d3.jpg"></p>
+<p>或者在WPJAM中设置：</p>
+<p><img src="https://cdn.97866.com/wp-content/uploads/sites/26/2023/05/1684249708-image.png?imageMogr2/auto-orient/thumbnail/!1200x722r/gravity/Center/crop/1200x722/quality/70/interlace/1%7Cwatermark/1/image/aHR0cHM6Ly9jZG4ud3BqYW0uY29tL3dwamFtL3dhdGVybWFyay5wbmc/dissolve/50#" srcset="/img/loading.gif" lazyload alt="wpjam"></p>
+<p>设置完成后即可享受快速的CSS&#x2F;JS&#x2F;图片加速。</p>
+<p>WPJAM下载链接：<a target="_blank" rel="noopener" href="https://cn.wordpress.org/plugins/wpjam-basic/">WPJAM Basic – WordPress 插件 | WordPress.org China 简体中文</a></p>
+<p>WP-Rocket开心版下载：<a target="_blank" rel="noopener" href="https://pan.awak.top/s/k5h6">wp-rocket_v3.14.1.zip - Cloudreve (awak.top)</a></p>
+<h2 id="头像-字体-后台加速"><a href="#头像-字体-后台加速" class="headerlink" title="头像&#x2F;字体&#x2F;后台加速"></a>头像&#x2F;字体&#x2F;后台加速</h2><p>说到后台核心文件加速，我想到了使用WP-China-Yes，但其对谷歌字体的加速已失效，我将其修改到了Google官方的CN镜像地址，同时将Gravatar替换为我自建的SDN地址（FallSoft SDN）。</p>
+<p><img src="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/2023/8/20230808195915_3bd36a8fd66f78a5ce2033d9ad5407f1.png" srcset="/img/loading.gif" lazyload alt="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/2023/8/20230808195915_3bd36a8fd66f78a5ce2033d9ad5407f1.png"></p>
+<p>WP-China-Yes自用修改版：<a target="_blank" rel="noopener" href="https://pan.awak.top/s/l5i5">wp-china-yes.zip - Cloudreve (awak.top)</a></p>
+<h2 id="Opcache"><a href="#Opcache" class="headerlink" title="Opcache"></a>Opcache</h2><p>宝塔：在宝塔面板中安装PHP扩展Opache即可。</p>
+<p>Oneinstack：<code>./install.sh --php_extensions opcache</code></p>
+<p>LNMP：<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/1135.html">LNMP安装php扩展模块（eAccelerator、xCache、memcached、imageMagick和ionCube） (biancheng.net)</a></p>
+<h2 id="Redis-Memcached"><a href="#Redis-Memcached" class="headerlink" title="Redis&#x2F;Memcached"></a>Redis&#x2F;Memcached</h2><h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>安装Redis：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/hunanzp/p/12304622.html">Linux安装部署Redis(超级详细) - 长沙大鹏 - 博客园 (cnblogs.com)</a></p>
+<p>宝塔面板直接在软件商店安装Redis即可。(无需设置)</p>
+<p>安装<a target="_blank" rel="noopener" href="https://cn.wordpress.org/plugins/redis-cache/">Redis Object Cache – WordPress 插件</a>。</p>
+<p>开启插件后会自动连接到Redis。</p>
+<h3 id="Memcached"><a href="#Memcached" class="headerlink" title="Memcached"></a>Memcached</h3><p>本人不熟悉，指路：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.wpjam.com/article/wordpress-memcached/">使用 Memcached 内存缓存来提高 WordPress 站点速度 - WordPress 果酱 (wpjam.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.litespeedtech.com/lscache/lscwp/cache/#object-tab">Cache | Screen-by-Screen | LSCache for WordPress | LiteSpeed Documentation (litespeedtech.com)</a></p>
+<h2 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h2><p>参考自：<a target="_blank" rel="noopener" href="https://blog.ixk.me/post/wordpress-enabled-service-worker">为WordPress启用Service Worker | 青空之蓝 (ixk.me)</a></p>
+<h3 id="加入-sw-toolbox-核心至-WordPress"><a href="#加入-sw-toolbox-核心至-WordPress" class="headerlink" title="加入 sw-toolbox 核心至 WordPress"></a>加入 sw-toolbox 核心至 WordPress</h3><p>下载<a target="_blank" rel="noopener" href="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/js/sw-toolbox.js">sw-toolbox.js</a>并且放到博客程序的根目录.</p>
+<h3 id="创建缓存规则"><a href="#创建缓存规则" class="headerlink" title="创建缓存规则"></a>创建缓存规则</h3><p>在博客个目录创建一个serviceworker.js，根据网站情况书写，下面是<a target="_blank" rel="noopener" href="https://www.galxfans.top/">GalX次元 - 免费的galgame资源站 (galxfans.top)</a>的Service Worker规则示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><br>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-string">&quot;use strict&quot;</span>;<br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * Service Worker Toolbox caching</span><br><span class="hljs-comment">   */</span><br><br>  <span class="hljs-keyword">var</span> cacheVersion = <span class="hljs-string">&quot;-toolbox-v1&quot;</span>;<br>  <span class="hljs-keyword">var</span> dynamicVendorCacheName = <span class="hljs-string">&quot;dynamic-vendor&quot;</span> + cacheVersion;<br>  <span class="hljs-keyword">var</span> staticVendorCacheName = <span class="hljs-string">&quot;static-vendor&quot;</span> + cacheVersion;<br>  <span class="hljs-keyword">var</span> staticAssetsCacheName = <span class="hljs-string">&quot;static-assets&quot;</span> + cacheVersion;<br>  <span class="hljs-keyword">var</span> contentCacheName = <span class="hljs-string">&quot;content&quot;</span> + cacheVersion;<br>  <span class="hljs-keyword">var</span> maxEntries = <span class="hljs-number">50</span>;<br>  <span class="hljs-comment">//以下的网址请更换为博客地址(可以填写绝对链接或者相对链接)</span><br>  self.<span class="hljs-title function_">importScripts</span>(<span class="hljs-string">&quot;https://www.galxfans.top/sw-toolbox.js&quot;</span>);<br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">options</span>.<span class="hljs-property">debug</span> = <span class="hljs-literal">false</span>;<br>  <span class="hljs-comment">//由于我的博客启用Autoptimize，以及WP Super Cache，所以添加Cache目录</span><br><span class="hljs-comment">//   self.toolbox.router.get(&quot;wp-content/cache/(.*)&quot;, self.toolbox.cacheFirst, &#123;</span><br><span class="hljs-comment">//     cache: &#123;</span><br><span class="hljs-comment">//       name: staticAssetsCacheName,</span><br><span class="hljs-comment">//       maxEntries: maxEntries</span><br><span class="hljs-comment">//     &#125;</span><br><span class="hljs-comment">//   &#125;);</span><br>  <span class="hljs-comment">//添加毒瘤jquery的缓存规则</span><br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<br>    <span class="hljs-string">&quot;wp-includes/js/jquery/jquery.js&quot;</span>,<br>    self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">cacheFirst</span>,<br>    &#123;<br>      <span class="hljs-attr">cache</span>: &#123;<br>        <span class="hljs-attr">name</span>: staticAssetsCacheName,<br>        <span class="hljs-attr">maxEntries</span>: maxEntries<br>      &#125;<br>    &#125;<br>  );<br>  <span class="hljs-comment">//添加主题的静态资源，具体目录请自行更换</span><br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<br>    <span class="hljs-string">&quot;wp-content/themes/Autumn-Pro/static/(.*)&quot;</span>,<br>    self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">cacheFirst</span>,<br>    &#123;<br>      <span class="hljs-attr">cache</span>: &#123;<br>        <span class="hljs-attr">name</span>: staticAssetsCacheName,<br>        <span class="hljs-attr">maxEntries</span>: maxEntries<br>      &#125;<br>    &#125;<br>  );<br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<br>    <span class="hljs-string">&quot;wp-includes/css/(.*)&quot;</span>,<br>    self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">cacheFirst</span>,<br>    &#123;<br>      <span class="hljs-attr">cache</span>: &#123;<br>        <span class="hljs-attr">name</span>: staticAssetsCacheName,<br>        <span class="hljs-attr">maxEntries</span>: maxEntries<br>      &#125;<br>    &#125;<br>  );<br>  <span class="hljs-comment">//以下均为第三方资源缓存</span><br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/(.*)&quot;</span>, self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">cacheFirst</span>, &#123;<br>    <span class="hljs-attr">origin</span>: <span class="hljs-regexp">/cdn2\.chuqis\.com/</span>,<br>    <span class="hljs-attr">cache</span>: &#123;<br>      <span class="hljs-attr">name</span>: staticVendorCacheName,<br>      <span class="hljs-attr">maxEntries</span>: maxEntries<br>    &#125;<br>  &#125;);<br><br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/(.*)&quot;</span>, self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">cacheFirst</span>, &#123;<br>    <span class="hljs-attr">origin</span>: <span class="hljs-regexp">/cdn\.chuqis\.com/</span>,<br>    <span class="hljs-attr">cache</span>: &#123;<br>      <span class="hljs-attr">name</span>: staticVendorCacheName,<br>      <span class="hljs-attr">maxEntries</span>: maxEntries<br>    &#125;<br>  &#125;);<br><br>  <span class="hljs-comment">// 缓存 cdn</span><br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/(.*)&quot;</span>, self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">fastest</span>, &#123;<br>    <span class="hljs-attr">origin</span>: <span class="hljs-regexp">/cdn\.staticfile\.org/</span>,<br>    <span class="hljs-attr">cache</span>: &#123;<br>      <span class="hljs-attr">name</span>: staticVendorCacheName,<br>      <span class="hljs-attr">maxEntries</span>: maxEntries<br>    &#125;<br>  &#125;);<br><br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/(.*)&quot;</span>, self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">fastest</span>, &#123;<br>    <span class="hljs-attr">origin</span>: <span class="hljs-regexp">/cravatar\.cn/</span>,<br>    <span class="hljs-attr">cache</span>: &#123;<br>      <span class="hljs-attr">name</span>: staticVendorCacheName,<br>      <span class="hljs-attr">maxEntries</span>: maxEntries<br>    &#125;<br>  &#125;);<br>  <br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/(.*)&quot;</span>, self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">fastest</span>, &#123;<br>    <span class="hljs-attr">origin</span>: <span class="hljs-regexp">/unpkg\.com/</span>,<br>    <span class="hljs-attr">cache</span>: &#123;<br>      <span class="hljs-attr">name</span>: staticVendorCacheName,<br>      <span class="hljs-attr">maxEntries</span>: maxEntries<br>    &#125;<br>  &#125;);<br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/(.*)&quot;</span>, self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">fastest</span>, &#123;<br>    <span class="hljs-attr">origin</span>: <span class="hljs-regexp">/img\.galx\.umine\.top/</span>,<br>    <span class="hljs-attr">cache</span>: &#123;<br>      <span class="hljs-attr">name</span>: staticVendorCacheName,<br>      <span class="hljs-attr">maxEntries</span>: maxEntries<br>    &#125;<br>  &#125;);<br>  self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">router</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/(.*)&quot;</span>, self.<span class="hljs-property">toolbox</span>.<span class="hljs-property">fastest</span>, &#123;<br>    <span class="hljs-attr">origin</span>: <span class="hljs-regexp">/inkdustv\.cachefly\.net/</span>,<br>    <span class="hljs-attr">cache</span>: &#123;<br>      <span class="hljs-attr">name</span>: staticVendorCacheName,<br>      <span class="hljs-attr">maxEntries</span>: maxEntries<br>    &#125;<br>  &#125;);<br><br><br><span class="hljs-comment">//   self.toolbox.router.get(&quot;/(.*)&quot;, self.toolbox.cacheFirst, &#123;</span><br><span class="hljs-comment">//     origin: /(fonts-gstatic\.yecdn\.com|www\.google-analytics\.com)/,</span><br><span class="hljs-comment">//     cache: &#123;</span><br><span class="hljs-comment">//       name: staticVendorCacheName,</span><br><span class="hljs-comment">//       maxEntries: maxEntries</span><br><span class="hljs-comment">//     &#125;</span><br><span class="hljs-comment">//   &#125;);</span><br><br>  <span class="hljs-comment">// immediately activate this serviceworker</span><br>  self.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;install&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;<br>    <span class="hljs-keyword">return</span> event.<span class="hljs-title function_">waitUntil</span>(self.<span class="hljs-title function_">skipWaiting</span>());<br>  &#125;);<br><br>  self.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;activate&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;<br>    <span class="hljs-keyword">return</span> event.<span class="hljs-title function_">waitUntil</span>(self.<span class="hljs-property">clients</span>.<span class="hljs-title function_">claim</span>());<br>  &#125;);<br>&#125;)();<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="启用-Service-Workers"><a href="#启用-Service-Workers" class="headerlink" title="启用 Service Workers"></a>启用 Service Workers</h3><p>打开主题文件所在目录，修改 footer.php，在 <code>&lt;/body&gt;</code> 前加入以下代码:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&lt;script&gt;<br>  <span class="hljs-keyword">var</span> serviceWorkerUri = <span class="hljs-string">&quot;/serviceworker.js&quot;</span>;<br><br>  <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;serviceWorker&quot;</span> <span class="hljs-keyword">in</span> navigator) &#123;<br>    navigator.<span class="hljs-property">serviceWorker</span><br>      .<span class="hljs-title function_">register</span>(serviceWorkerUri)<br>      .<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">if</span> (navigator.<span class="hljs-property">serviceWorker</span>.<span class="hljs-property">controller</span>) &#123;<br>          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Assets cached by the controlling service worker.&quot;</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>            <span class="hljs-string">&quot;Please reload this page to allow the service worker to handle network operations.&quot;</span><br>          );<br>        &#125;<br>      &#125;)<br>      .<span class="hljs-title function_">catch</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;ERROR: &quot;</span> + error);<br>      &#125;);<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Service workers are not supported in the current browser.&quot;</span>);<br>  &#125;<br>&lt;/script&gt;<br><br></code></pre></td></tr></table></figure>
+
+<p>即刻享受Service Worker毫秒级响应加速。</p>
+<p>更多加速方法，请自行探索！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" class="category-chain-item">技术教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WordPress/" class="print-no-link">#WordPress</a>
+      
+        <a href="/tags/%E5%8A%A0%E9%80%9F/" class="print-no-link">#加速</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WordPress高速加载性能优化方案</div>
+      <div>https://www.inkdust.top/posts/wordpress-high-speed.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>InkDust</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/kill-ewt360.html" title="升学E网通试题答案获取、自动答题全方位薄纱">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">升学E网通试题答案获取、自动答题全方位薄纱</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/wordpress-delopy.html" title="以多种方式部署WordPress博客">
+                        <span class="hidden-mobile">以多种方式部署WordPress博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twikoo/1.6.8/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://ink-twikoo.netlify.app/.netlify/functions/twikoo","region":null,"path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              Fluid.utils.listenDOMLoaded(function() {
+                var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+                Fluid.plugins.imageCaption(imgSelector);
+                Fluid.plugins.fancyBox(imgSelector);
+              });
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <p>本站由<a href="https://boochi.cn" target="_blank" rel="nofollow noopener"><span>风栖泊集</span></a>提供网站加速支持<br> Copyright © 2022-2024 墨尘 の 网络日志</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="umami-site-pv-container" style="display: none">
+        总访问量 
+        <span id="umami-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="umami-site-uv-container" style="display: none">
+        总访客数 
+        <span id="umami-site-uv"></span>
+         人
+      </span>
+    
+    
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/umami-view.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

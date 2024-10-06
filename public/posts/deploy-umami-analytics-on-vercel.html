@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cravatar.cn/avatar/4214719ec961227dd3a14fd5995844c7?&amp;r=pg">
+  <link rel="icon" href="https://cravatar.cn/avatar/4214719ec961227dd3a14fd5995844c7?&amp;r=pg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="InkDust">
+  <meta name="keywords" content="inkdust,ink dust,ink blog.inkdust blog,墨尘,墨尘的博客">
+  
+    <meta name="description" content="转载本文转载于 在 Vercel 部署 umami 网站统计及报错解决 | Tony’s Blog (iamsjy.com)，遵循 CC BY 4.0 协议. 原文作者：Tony 原文链接： https:&#x2F;&#x2F;blog.iamsjy.com&#x2F;2022&#x2F;10&#x2F;04&#x2F;deploy-umami-analytics-on-vercel&#x2F; 导入Umami 是一种简单、快速的网站分析替代品，可替代 Google">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【转载】在 Vercel 部署 umami 网站统计及报错解决">
+<meta property="og:url" content="https://www.inkdust.top/posts/deploy-umami-analytics-on-vercel.html">
+<meta property="og:site_name" content="墨尘の网络日志">
+<meta property="og:description" content="转载本文转载于 在 Vercel 部署 umami 网站统计及报错解决 | Tony’s Blog (iamsjy.com)，遵循 CC BY 4.0 协议. 原文作者：Tony 原文链接： https:&#x2F;&#x2F;blog.iamsjy.com&#x2F;2022&#x2F;10&#x2F;04&#x2F;deploy-umami-analytics-on-vercel&#x2F; 导入Umami 是一种简单、快速的网站分析替代品，可替代 Google">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/blog-image/umami-vercel.webp">
+<meta property="article:published_time" content="2023-08-22T09:06:04.088Z">
+<meta property="article:modified_time" content="2024-08-18T15:04:06.114Z">
+<meta property="article:author" content="InkDust">
+<meta property="article:tag" content="inkdust,ink dust,ink blog.inkdust blog,墨尘,墨尘的博客">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/blog-image/umami-vercel.webp">
+  
+  
+  
+  <title>【转载】在 Vercel 部署 umami 网站统计及报错解决 - 墨尘の网络日志</title>
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.inkdust.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨尘の网络日志</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/blog-image/blog-banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【转载】在 Vercel 部署 umami 网站统计及报错解决"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        InkDust
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-22 09:06" pubdate>
+          2023年8月22日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          565 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="umami-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="umami-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【转载】在 Vercel 部署 umami 网站统计及报错解决</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h1><p><strong>本文转载于 <a target="_blank" rel="noopener" href="https://blog.iamsjy.com/2022/10/04/deploy-umami-analytics-on-vercel/">在 Vercel 部署 umami 网站统计及报错解决 | Tony’s Blog (iamsjy.com)</a>，遵循 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC BY 4.0 协议</a>.</strong></p>
+<p><strong>原文作者：Tony</strong></p>
+<p><strong>原文链接：</strong> <a target="_blank" rel="noopener" href="https://blog.iamsjy.com/2022/10/04/deploy-umami-analytics-on-vercel/">https://blog.iamsjy.com/2022/10/04/deploy-umami-analytics-on-vercel/</a></p>
+<h2 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h2><p>Umami 是一种简单、快速的网站分析替代品，可替代 Google Analytics。</p>
+<p>注：本文前两部分转载于 Lemonawa’s Blog，遵循 CC BY 4.0 协议，报错解决部分为原创。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>一个GitHub账号</p>
+<p>一个Vercel账号（可直接由GitHub登录）</p>
+<p>一个supabase账号（可直接由GitHub登录）</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>访问umami的代码仓库，将其Fork至自己的账户中。</p>
+<p>登录supabase，单击New Project来新建一个数据库，根据提示设置数据库名称和密码。</p>
+<p><img src="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/image_f75e98c762deb9acd3f82a8775488231.png" srcset="/img/loading.gif" lazyload alt="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/image_f75e98c762deb9acd3f82a8775488231.png"></p>
+<p>进入刚刚新建的Project，点击左边的SQL Editor（命令图标）- New query来新建查询，并将此处的命令全部复制到框中，随后点击RUN，看见Success即可。</p>
+<p><img src="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/image_1b20be42f32e15cbb185f7a205a8a76a.png" srcset="/img/loading.gif" lazyload alt="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/image_1b20be42f32e15cbb185f7a205a8a76a.png"></p>
+<p>然后打开Vercel，登录，点击New Project，在左侧选中Fork的项目，点击Environment Variables来设置环境变量：</p>
+<p> <img src="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/image_0818371b6ab29d2d828b547b89d13ac7.png" srcset="/img/loading.gif" lazyload alt="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/image_0818371b6ab29d2d828b547b89d13ac7.png"></p>
+<p>DATABASE_URL: postgresql:&#x2F;&#x2F;postgres:[YOUR-PASSWORD]@[Your-URI]:5432&#x2F;postgres（在supabase project-左侧设置-Database-Connection string-URI获得）</p>
+<p>HASH_SALT: 随机英文字符串（滚键盘）</p>
+<p>然后点击部署，部署完成后会给一个域名，点击即可进入</p>
+<p>用户名：admin</p>
+<p>默认密码：umami</p>
+<h2 id="报错解决"><a href="#报错解决" class="headerlink" title="报错解决"></a>报错解决</h2><p>你需要准备一台 Linux x86 VPS（不能是 arm64）。如果没有，建议使用 GitHub Codespaces 来操作。</p>
+<p>以下是详细步骤：</p>
+<p>数据库连接失败（Unable to connect to the database）</p>
+<p>请检查 Vercel 环境变量中 DATABASE_URL 的值是否填写正确，有没有多加 DATABASE_URL。修改后重新部署即可。</p>
+<p>数据库连接失败（A migration failed to apply.）</p>
+<p>将你 fork 的 umami 仓库 clone 到本地，并进入仓库目录。</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/[%E4%BD%A0%E7%9A%84">https://github.com/[你的</a> GitHub 用户名]&#x2F;umami &amp;&amp; cd umami</p>
+<p>在本地 umami 目录中创建一个 .env 文件，填入 DATABASE_URL&#x3D; ，后面粘贴数据库连接地址（与 Vercel 环境变量中 DATABASE_URL 的值相同，可以直接复制过来）。</p>
+<p>在本地 umami 目录中执行以下命令：</p>
+<p>yarn install</p>
+<p>yarn build</p>
+<p>检查详细d报错信息，并根据不同的报错执行不同的修复命令</p>
+<p>如果是 02_add_event_data 错误则执行以下命令</p>
+<p>yarn prisma migrate resolve –applied “02_add_event_data”</p>
+<p>如果是 03_remove_casade_delete 错误则执行以下命令</p>
+<p>yarn prisma migrate resolve –applied “03_remove_casade_delete”</p>
+<p>等待命令执行完成，提示 Success! 则表示成功。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【转载】在 Vercel 部署 umami 网站统计及报错解决</div>
+      <div>https://www.inkdust.top/posts/deploy-umami-analytics-on-vercel.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>InkDust</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/vercel-recover.html" title="[2023.10]Vercel国内阻断解决方案">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[2023.10]Vercel国内阻断解决方案</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/kill-ewt360.html" title="升学E网通试题答案获取、自动答题全方位薄纱">
+                        <span class="hidden-mobile">升学E网通试题答案获取、自动答题全方位薄纱</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twikoo/1.6.8/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://ink-twikoo.netlify.app/.netlify/functions/twikoo","region":null,"path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              Fluid.utils.listenDOMLoaded(function() {
+                var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+                Fluid.plugins.imageCaption(imgSelector);
+                Fluid.plugins.fancyBox(imgSelector);
+              });
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <p>本站由<a href="https://boochi.cn" target="_blank" rel="nofollow noopener"><span>风栖泊集</span></a>提供网站加速支持<br> Copyright © 2022-2024 墨尘 の 网络日志</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="umami-site-pv-container" style="display: none">
+        总访问量 
+        <span id="umami-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="umami-site-uv-container" style="display: none">
+        总访客数 
+        <span id="umami-site-uv"></span>
+         人
+      </span>
+    
+    
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/umami-view.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

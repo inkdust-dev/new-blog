@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cravatar.cn/avatar/4214719ec961227dd3a14fd5995844c7?&amp;r=pg">
+  <link rel="icon" href="https://cravatar.cn/avatar/4214719ec961227dd3a14fd5995844c7?&amp;r=pg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="InkDust">
+  <meta name="keywords" content="inkdust,ink dust,ink blog.inkdust blog,墨尘,墨尘的博客">
+  
+    <meta name="description" content="引入现如今，向像腾讯，阿里云等大厂的免费SSL证书，都由一年缩短为3个月。 https:&#x2F;&#x2F;cloud.tencent.com&#x2F;document&#x2F;product&#x2F;400&#x2F;104538 在如今的形式下，签发免费的3个月的单域名证书显然不如直接签发Let’s Encrypt、ZeroSSL等ACME提供的泛域名证书来的方便。 而acme.sh常用于Linux端上证书的自动化签发与续约，对于不使用服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSL系列一之快速签发免费Let&#39;s Encrypt泛域名证书">
+<meta property="og:url" content="https://www.inkdust.top/posts/ltesencrypt-ssl.html">
+<meta property="og:site_name" content="墨尘の网络日志">
+<meta property="og:description" content="引入现如今，向像腾讯，阿里云等大厂的免费SSL证书，都由一年缩短为3个月。 https:&#x2F;&#x2F;cloud.tencent.com&#x2F;document&#x2F;product&#x2F;400&#x2F;104538 在如今的形式下，签发免费的3个月的单域名证书显然不如直接签发Let’s Encrypt、ZeroSSL等ACME提供的泛域名证书来的方便。 而acme.sh常用于Linux端上证书的自动化签发与续约，对于不使用服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/ltesencrypt-ssl_be3d1fad61002208589a66246d0a7e78.png">
+<meta property="article:published_time" content="2024-08-07T14:26:44.564Z">
+<meta property="article:modified_time" content="2024-08-07T14:27:13.280Z">
+<meta property="article:author" content="InkDust">
+<meta property="article:tag" content="inkdust,ink dust,ink blog.inkdust blog,墨尘,墨尘的博客">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/qexo-upload/24/8/ltesencrypt-ssl_be3d1fad61002208589a66246d0a7e78.png">
+  
+  
+  
+  <title>SSL系列一之快速签发免费Let&#39;s Encrypt泛域名证书 - 墨尘の网络日志</title>
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.inkdust.top","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>墨尘の网络日志</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://cdnn.boochi.cn/gh/inkdust-dev/ink-oss@main/blog-image/blog-banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="SSL系列一之快速签发免费Let&#39;s Encrypt泛域名证书"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        InkDust
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-07 14:26" pubdate>
+          2024年8月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="umami-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="umami-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">SSL系列一之快速签发免费Let&#39;s Encrypt泛域名证书</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>现如今，向像腾讯，阿里云等大厂的免费SSL证书，都由一年缩短为3个月。</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/400/104538">https://cloud.tencent.com/document/product/400/104538</a></p>
+<p>在如今的形式下，签发免费的3个月的单域名证书显然不如直接签发Let’s Encrypt、ZeroSSL等ACME提供的泛域名证书来的方便。</p>
+<p>而acme.sh常用于Linux端上证书的自动化签发与续约，对于不使用服务器的人群，显然造成了许多麻烦，那么可以通过Web端直接签发这些ACME的泛域名证书吗？</p>
+<p>Github开源项目ACME-Web-Browser-Client告诉了我们这并非是一件不可能实现的事情。</p>
+<p>简介：</p>
+<p>本网页客户端（仅一个静态HTML网页文件）用于：向 Let’s Encrypt、ZeroSSL、Google 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL&#x2F;TLS 域名证书（RSA、ECC&#x2F;ECDSA），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境（Windows、macOS都能用），无需下载和安装软件，无需注册登录，纯手动操作，只专注于申请获得证书这一件事，简单易用，非常适用于希望手动快捷申请获得证书的使用场景。</p>
+<p>Github开源地址：<a target="_blank" rel="noopener" href="https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client">https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client</a></p>
+<p>Gitee开源地址：</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client">https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client</a></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>提示：可将其私有化部署到Vercel，Netlify等上，可弥补Github Pages速度的不足。</p>
+<p>任意点击下列一个网页使用：</p>
+<p><a target="_blank" rel="noopener" href="https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html">https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html</a> （作者Github Pages）</p>
+<p><a target="_blank" rel="noopener" href="https://ssl.dev.inkdust.top/">https://ssl.dev.inkdust.top/</a> （本人Vercel）</p>
+<h2 id="签发Let’s-Encrypt"><a href="#签发Let’s-Encrypt" class="headerlink" title="签发Let’s Encrypt"></a>签发Let’s Encrypt</h2><p>本文为签发Let’s Encrypt篇教程，签发ZeroSSL或Google，请看ZeroSSL篇和Google篇。</p>
+<h3 id="步骤一：选择证书颁发机构"><a href="#步骤一：选择证书颁发机构" class="headerlink" title="步骤一：选择证书颁发机构"></a>步骤一：选择证书颁发机构</h3><p>在“证书颁发机构 ACME(v2, RFC 8555) 服务URL”下选择Let’s Encrypt，点击 <code>读取服务目录</code>并等待出现：</p>
+<p>读取服务目录成功，请进行下一步操作。 URL&#x3D;<a target="_blank" rel="noopener" href="https://acme-v02.api.letsencrypt.org/directory">https://acme-v02.api.letsencrypt.org/directory</a></p>
+<p>即为成功选择Let’s Encrypt。</p>
+<h3 id="步骤二：证书配置"><a href="#步骤二：证书配置" class="headerlink" title="步骤二：证书配置"></a>步骤二：证书配置</h3><p>提示：如果上次申请过证书，可以拖拽已下载保存的记录LOG文件到本页面，将自动填充上次的配置信息。</p>
+<p>在“证书中要包含的域名：”中填写你要签发的域名。</p>
+<p>泛域名填写方式：example.com,*.example.com</p>
+<p>单域名填写方式：<a target="_blank" rel="noopener" href="http://www.example.com/">www.example.com</a></p>
+<p>多域名合并：<a target="_blank" rel="noopener" href="http://www.example.com,site1.example.com,site2.example.com/">www.example.com,site1.example.com,site2.example.com</a></p>
+<p><code>带通配符的域名只支持DNS验证，其他域名支持上传文件验证</code></p>
+<p>在 <code>证书的私钥：</code>处一般选择 <code>创建新RSA私钥</code>或 <code>创建新ECC私钥</code>，根据证书的加密形式而定。</p>
+<p>在 <code>ACME账户的私钥：</code>处一般选择 <code>创建新RSA私钥 </code>或 <code>创建新ECC私钥 </code>，根据证书的加密形式而定。</p>
+<p>在 <code> ACME账户的联系邮箱：</code>处填写你的邮箱，该邮箱必须真实存在。</p>
+<h3 id="步骤三：验证域名所有权"><a href="#步骤三：验证域名所有权" class="headerlink" title="步骤三：验证域名所有权"></a>步骤三：验证域名所有权</h3><p>请给每个域名选择一个你合适的验证方式，泛域名只能使用DNS解析方式。</p>
+<p>DNS解析方式：登陆到你的解析提供平台，如DNSPod，CloudFlare等，添加一条或多条TXT记录。</p>
+<p>文件验证方式：仅限单域名，在你域名所属的文件目录下 创建 <code>/.well-known/acme-challenge/</code>目录并在内创建验证文件。</p>
+<p>TLS-ALPN-01：使用Key Authorizations (Token+.+指纹)自行处理，Digest为Key Authorizations的SHA-256 Base64值。</p>
+<p>完成后，点击“开始验证”即可验证。</p>
+<h2 id="步骤四：下载保存证书PEM文件"><a href="#步骤四：下载保存证书PEM文件" class="headerlink" title="步骤四：下载保存证书PEM文件"></a>步骤四：下载保存证书PEM文件</h2><p>完成验证后，服务端会自动签发SSL证书，点击下载即可下载证书对应私钥，公钥和Log文件。</p>
+<h3 id="其他提示"><a href="#其他提示" class="headerlink" title="其他提示"></a>其他提示</h3><p>1.你需要其他格式的证书文件？</p>
+<p>大部分服务器程序支持直接使用 your_domain.pem+your_domain.key 来配置开启HTTPS（比如Nginx），如果你需要 <em>.pfx、</em>.p12 格式的证书（比如用于IIS），请用下面命令将PEM证书转换成 pfx&#x2F;p12 格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">openssl pkcs12 -export -out your_domain.pfx -inkey your_domain.key -in your_domain.pem<br></code></pre></td></tr></table></figure>
+
+<p>2.IIS证书链缺失？</p>
+<p>对于Windows IIS服务器，你需要将证书链安装到“本地计算机”的“中间证书颁发机构”中；请将PEM证书中的所有证书拆分成单个PEM文件（后缀改成.crt或.cer），然后将系统中缺失的中间证书双击打开然后安装进去；详细参考： <a target="_blank" rel="noopener" href="http://support.microsoft.com/kb/954755">http://support.microsoft.com/kb/954755</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>SSL系列一之快速签发免费Let&#39;s Encrypt泛域名证书</div>
+      <div>https://www.inkdust.top/posts/ltesencrypt-ssl.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>InkDust</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/zerossl-ssl.html" title="SSL系列二之快速签发免费ZeroSSL泛域名证书">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SSL系列二之快速签发免费ZeroSSL泛域名证书</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/minecraft-server-deploy.html" title="基于Win Server部署Minecraft服务器">
+                        <span class="hidden-mobile">基于Win Server部署Minecraft服务器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twikoo/1.6.8/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://ink-twikoo.netlify.app/.netlify/functions/twikoo","region":null,"path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              Fluid.utils.listenDOMLoaded(function() {
+                var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+                Fluid.plugins.imageCaption(imgSelector);
+                Fluid.plugins.fancyBox(imgSelector);
+              });
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <p>本站由<a href="https://boochi.cn" target="_blank" rel="nofollow noopener"><span>风栖泊集</span></a>提供网站加速支持<br> Copyright © 2022-2024 墨尘 の 网络日志</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="umami-site-pv-container" style="display: none">
+        总访问量 
+        <span id="umami-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="umami-site-uv-container" style="display: none">
+        总访客数 
+        <span id="umami-site-uv"></span>
+         人
+      </span>
+    
+    
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="/js/umami-view.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
