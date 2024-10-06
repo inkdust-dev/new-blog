@@ -288,11 +288,11 @@ web_analytics:
   umami:
     # umami js 文件地址，需要在 umami 后台创建站点后获取
     # umami js file url, get after create website in umami
-    src:
+    src: https://stat.inkdust.top/script.js
 
     # umami 的 website id，需要在 umami 后台创建站点后获取
     # umami website id, get after create website in umami
-    website_id:
+    website_id: 813d99fb-826c-4294-bc33-fd27bf43f81d
 
     # 如果你只想统计特定的域名可以填入此字段，多个域名通过逗号分隔，这可以避免统计 localhost。
     # If you only want to tracker to specific domains you can fill in this field, multiple domain names are separated by commas, which can avoid tracker localhost
@@ -300,15 +300,15 @@ web_analytics:
 
     # 用于统计 PV UV 的开始时间，格式为 "YYYY-MM-DD"
     # statistics on the start time, the format is "YYYY-MM-DD"
-    start_time: 2024-01-01
+    start_time: 2024-9-01
 
     # 新建一个 umami viewOnly 用户，然后通过 login api 获取该用户 token
     # create an umami viewOnly user, and then get user token through the login api
-    token:
+    token: svio+wu1DUsjGqQpBCa9iV7ycoxZF/NzAnqTTP80wGgtip2BPzvv949Ml9SFeFLDuBunGCY7+RDW9E0+SU5aerKQZyplNqCRt/PuDtMRJf8YFAdErOIZMuFSmUR+4Fz+bGzMQTycYE3cSTDLOZUrMy/0EXe39JN2zEc3QV5Cvn80duaFII/J8FfzQvkBkQkNqjsoVUIZQ990LdXjw7eOcD1FDy5XRpCp0bw4lbJGB6qqoYls+1+lB8ld9nhD6X9AYlfDGYOWFmnUkEa3aAHOIZgPmyBDgVh2fRv9apzfWp/GkAvMItbr5muf1pLbSJ30V+wKesuSHbBmFpGX3pl3gMIDvNzj2cl1aQ==
 
     # 填写 umami 部署的服务器地址，如 "https://umami.example.com"
     # server url of umami deployment, such as "https://umami.example.com"
-    api_server:
+    api_server: https://stat.inkdust.top
 
 # Canonical 用于向 Google 搜索指定规范网址，开启前确保 hexo _config.yml 中配置 `url: http://yourdomain.com`
 # Canonical, to specify a canonical URL for Google Search, need to set up `url: http://yourdomain.com` in hexo _config.yml
